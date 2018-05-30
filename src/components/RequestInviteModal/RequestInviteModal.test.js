@@ -49,3 +49,5 @@ describe("RequestInviteModal", () => {
     expect(wrapper.find(RequestInviteSuccess).length).toBe(1);
   });
 });
+
+//TODO test request invite endpoint call

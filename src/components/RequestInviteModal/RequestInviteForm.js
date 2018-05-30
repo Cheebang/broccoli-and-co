@@ -63,9 +63,7 @@ export const RequestInviteForm = props => {
             />
             <FormControl.Feedback />
           </FormGroup>
-          {props.errorMessage && (
-            <Alert bsStyle="danger">{props.errorMessage}</Alert>
-          )}
+          {props.errorMessage && <Alert bsStyle="danger">{props.errorMessage}</Alert>}
           <Button type="submit" disabled={buttonDisabled}>
             {props.submissionInProgress && "Sending.... please wait"}
             {!props.submissionInProgress && "Submit"}

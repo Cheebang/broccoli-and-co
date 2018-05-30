@@ -32,17 +32,13 @@ export class RequestInviteModal extends Component {
     dispatch(setSubmissionInProg(true));
     dispatch(setErrorMessage(""));
     request
-      .post(
-        "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth"
-      )
-      .set("accept", "json")
+      .post("https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth")
       .send(this.props.requestParams)
       .end((err, resp) => {
         dispatch(setSubmissionInProg(false));
         if (resp.ok) {
           dispatch(setRequestSubmitted(true));
-        }
-        if (resp.body.errorMessage) {
+        } else if (resp.body.errorMessage) {
           dispatch(setErrorMessage(resp.body.errorMessage));
         }
       });
@@ -53,19 +49,19 @@ export class RequestInviteModal extends Component {
     this.props.onHide();
   }
 
-  renderForm() {
-    return <RequestInviteForm onSubmit={this.requestInvite} />;
+  renderInviteSuccess() {
+    return <RequestInviteSuccess onHide={this.onHide} />;
   }
 
-  renderSuccessfulMessage() {
-    return <RequestInviteSuccess onHide={this.onHide} />;
+  renderInviteForm() {
+    return <RequestInviteForm onSubmit={this.requestInvite} />;
   }
 
   render() {
     return (
       <Modal show={this.props.show} onHide={this.onHide}>
-        {!this.props.requestSubmitted && this.renderForm()}
-        {this.props.requestSubmitted && this.renderSuccessfulMessage()}
+        {!this.props.requestSubmitted && this.renderInviteForm()}
+        {this.props.requestSubmitted && this.renderInviteSuccess()}
       </Modal>
     );
   }

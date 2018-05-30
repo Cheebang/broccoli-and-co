@@ -8,13 +8,11 @@ const RequestInviteSuccess = props => (
       <Modal.Title>All done!</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <div>
-        You will be one of the first to experience Broccoli & Co when we launch!
-      </div>
-      <Button type="button" onClick={props.onHide}>
-        Ok
-      </Button>
+      You will be one of the first to experience Broccoli &amp; Co when we launch!
     </Modal.Body>
+    <Modal.Footer>
+      <Button type="button" onClick={props.onHide}>Ok</Button>
+    </Modal.Footer>
   </div>
 );
 
