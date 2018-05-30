@@ -1,30 +1,36 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import request from "superagent";
 
-import { getRequestParams } from "../../reducers/requestInviteReducer";
+import {
+  getRequestParams,
+  getRequestSubmitted,
+  getSubmissionInProgress,
+  getErrorMessage
+} from "../../reducers/requestInviteReducer";
 import RequestInviteForm from "./RequestInviteForm";
+import RequestInviteSuccess from "./RequestInviteSuccess";
+import {
+  resetState,
+  setSubmissionInProg,
+  setErrorMessage,
+  setRequestSubmitted
+} from "../../actions/requestInviteActions";
 
-const initialState = {
-  submissionInProgress: false,
-  requestSubmitted: false,
-  errorMessage: ""
-};
-
-class RequestInviteModal extends Component {
+export class RequestInviteModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...initialState };
-
     this.onHide = this.onHide.bind(this);
     this.requestInvite = this.requestInvite.bind(this);
   }
 
   requestInvite(event) {
     event.preventDefault();
-    this.setState({ submissionInProgress: true, errorMessage: "" });
+    const { dispatch } = this.props;
+    dispatch(setSubmissionInProg(true));
+    dispatch(setErrorMessage(""));
     request
       .post(
         "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth"
@@ -32,64 +38,55 @@ class RequestInviteModal extends Component {
       .set("accept", "json")
       .send(this.props.requestParams)
       .end((err, resp) => {
-        this.setState({ submissionInProgress: false });
+        dispatch(setSubmissionInProg(false));
         if (resp.ok) {
-          this.setState({ requestSubmitted: true });
+          dispatch(setRequestSubmitted(true));
         }
         if (resp.body.errorMessage) {
-          this.setState({ errorMessage: resp.body.errorMessage });
+          dispatch(setErrorMessage(resp.body.errorMessage));
         }
       });
   }
 
   onHide() {
-    this.setState({ ...initialState });
+    this.props.dispatch(resetState());
     this.props.onHide();
   }
 
   renderForm() {
-    return (
-      <RequestInviteForm
-        errorMessage={this.state.errorMessage}
-        submissionInProgress={this.state.submissionInProgress}
-        onSubmit={this.requestInvite}
-      />
-    );
+    return <RequestInviteForm onSubmit={this.requestInvite} />;
   }
 
   renderSuccessfulMessage() {
-    return (
-      <div>
-        <Modal.Header closeButton>
-          <Modal.Title>All done!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            You will be one of the first to experience Broccoli & Co when we
-            launch!
-          </div>
-          <Button type="button" onClick={this.onHide}>
-            Ok
-          </Button>
-        </Modal.Body>
-      </div>
-    );
+    return <RequestInviteSuccess onHide={this.onHide} />;
   }
 
   render() {
     return (
       <Modal show={this.props.show} onHide={this.onHide}>
-        {!this.state.requestSubmitted && this.renderForm()}
-        {this.state.requestSubmitted && this.renderSuccessfulMessage()}
+        {!this.props.requestSubmitted && this.renderForm()}
+        {this.props.requestSubmitted && this.renderSuccessfulMessage()}
       </Modal>
     );
   }
 }
 
-RequestInviteModal.propTypes = { requestParams: PropTypes.object };
+RequestInviteModal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired,
+  requestParams: PropTypes.object,
+  errorMessage: PropTypes.string,
+  requestSubmitted: PropTypes.bool.isRequired,
+  submissionInProgress: PropTypes.bool.isRequired
+};
 
 const mapStateToProps = state => ({
-  requestParams: getRequestParams(state)
+  requestParams: getRequestParams(state),
+  errorMessage: getErrorMessage(state),
+  requestSubmitted: getRequestSubmitted(state),
+  submissionInProgress: getSubmissionInProgress(state)
 });
 
-export default connect(mapStateToProps)(RequestInviteModal);
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestInviteModal);
