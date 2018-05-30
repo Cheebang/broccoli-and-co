@@ -24,7 +24,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Broccoli & Co</h1>
         </header>
-        <div>
+        <main className="content">
           <h1>A better way to enjoy every day</h1>
           <div className="App-intro">
             <div>Be the first to know when we launch</div>
@@ -36,7 +36,7 @@ class App extends Component {
               onHide={this.closeModal.bind(this)}
             />
           </div>
-        </div>
+        </main>
         <footer>
           <div>Made with love in Melbourne.</div>
           <div>&copy; 2018 Broccoli & Co</div>
