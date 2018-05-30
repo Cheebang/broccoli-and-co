@@ -24,16 +24,23 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Broccoli & Co</h1>
         </header>
-        <h1>A better way to enjoy every day</h1>
-        <div className="App-intro">
-          <div>Be the first to know when we launch</div>
-          <Button onClick={this.openModal.bind(this)}>Request an invite</Button>
-          <RequestInviteModal
-            show={this.state.showModal}
-            onHide={this.closeModal.bind(this)}
-          />
+        <div>
+          <h1>A better way to enjoy every day</h1>
+          <div className="App-intro">
+            <div>Be the first to know when we launch</div>
+            <Button onClick={this.openModal.bind(this)}>
+              Request an invite
+            </Button>
+            <RequestInviteModal
+              show={this.state.showModal}
+              onHide={this.closeModal.bind(this)}
+            />
+          </div>
         </div>
-        <footer>&copy; 2018 Broccoli & Co</footer>
+        <footer>
+          <div>Made with love in Melbourne.</div>
+          <div>&copy; 2018 Broccoli & Co</div>
+        </footer>
       </div>
     );
   }
