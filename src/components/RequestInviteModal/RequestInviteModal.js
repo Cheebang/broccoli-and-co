@@ -32,11 +32,13 @@ export class RequestInviteModal extends Component {
     dispatch(setSubmissionInProg(true));
     dispatch(setErrorMessage(""));
     request
-      .post("https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth")
+      .post(
+        "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth"
+      )
       .send(this.props.requestParams)
       .end((err, resp) => {
         dispatch(setSubmissionInProg(false));
-        if (resp.ok) {
+        if (resp.body === "Registered") {
           dispatch(setRequestSubmitted(true));
         } else if (resp.body.errorMessage) {
           dispatch(setErrorMessage(resp.body.errorMessage));

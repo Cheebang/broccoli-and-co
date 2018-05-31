@@ -113,4 +113,3 @@ describe("RequestInviteForm", () => {
     expect(wrapper.find(Button).props().disabled).toBeTruthy();
   });
 });
-//TODO check html5 validations

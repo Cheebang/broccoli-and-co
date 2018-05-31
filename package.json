@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "3",
     "bootstrap-material-design": "^4.1.1",
+    "nock": "^9.3.0",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.0",
@@ -18,7 +19,8 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.0",
     "react-test-renderer": "^16.2.0",
-    "redux-mock-store": "^1.4.0"
+    "redux-mock-store": "^1.4.0",
+    "superagent-httpbackend": "^0.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
